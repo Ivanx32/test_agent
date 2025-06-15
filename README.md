@@ -3,7 +3,7 @@
 A simple Progressive Web App that detects cats in images using a lightweight ONNX model running entirely in the browser.
 
 ## Usage
-Open `frontend/index.html` locally or visit the GitHub Pages site. Upload an image and click **Predict** to see if a cat is detected.
+Open `frontend/index.html` locally or visit the GitHub Pages site. The application installs as a PWA and works offline after the first visit. Upload an image and click **Predict** to see if a cat is detected.
 
 ## Development
 No backend or Docker is required. The app loads `squeezenet1_1.onnx` with [ONNX Runtime Web](https://onnxruntime.ai/docs/api/js/).
