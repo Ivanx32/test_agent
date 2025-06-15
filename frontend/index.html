@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Cat Detector">
+  <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxMDAgMTAwJz48dGV4dCB5PScuOWVtJyBmb250LXNpemU9JzkwJz7wn5CxPC90ZXh0Pjwvc3ZnPg==">
+  <link rel="manifest" href="manifest.json">
+  <title>Cat Detector</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Cat Detector</h1>
+  <input type="file" id="image-input" accept="image/*">
+  <div id="preview-container">
+    <img id="preview" alt="Preview" style="display:none;" />
+  </div>
+  <button id="predict-btn" disabled>Predict</button>
+  <p id="result"></p>
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
