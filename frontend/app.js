@@ -21,7 +21,13 @@ input.addEventListener('change', () => {
 async function loadModel() {
   if (!session) {
     result.textContent = 'Downloading model...';
-    session = await ort.InferenceSession.create('squeezenet1_1.onnx');
+    try {
+      session = await ort.InferenceSession.create('squeezenet1_1.onnx');
+      result.textContent = 'Model loaded. Click Predict.';
+    } catch (e) {
+      result.textContent = 'Failed to load model.';
+      throw e;
+    }
   }
 }
 
