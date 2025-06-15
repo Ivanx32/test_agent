@@ -5,11 +5,16 @@ const result = document.getElementById('result');
 let file;
 let session;
 
-// Ensure WASM backend loads from relative paths and doesn't require
-// cross-origin isolation (GitHub Pages lacks proper headers).
+
+// Ensure WASM backend loads from relative paths. Configure multi-threading
+// only when SharedArrayBuffer is available (GitHub Pages lacks the required
+// cross-origin headers).
 ort.env.wasm.wasmPaths = './';
-ort.env.wasm.numThreads = 1;
-ort.env.wasm.proxy = false;
+if (typeof SharedArrayBuffer === 'undefined' || !crossOriginIsolated) {
+  ort.env.wasm.numThreads = 1;
+  ort.env.wasm.proxy = false;
+}
+
 
 input.addEventListener('change', () => {
   file = input.files[0];
