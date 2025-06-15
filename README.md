@@ -12,6 +12,7 @@ No backend or Docker is required. The app loads `squeezenet1_1.onnx` with [ONNX 
 GitHub Actions automatically publishes the `frontend` directory to the `gh-pages` branch.
 
 ## Large files
-Sample test images and model weights are tracked with Git LFS. If you clone this
-repository without LFS files, run `git lfs pull` to fetch them. The test image
-dataset is omitted from the repository to keep the pull request lightweight.
+Sample test images are tracked with Git LFS. The model weights are stored
+directly in the repository, so additional commands are not required to run the
+web application. The test image dataset is omitted from the repository to keep
+the pull request lightweight.
