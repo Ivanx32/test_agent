@@ -5,6 +5,15 @@ const result = document.getElementById('result');
 let file;
 let session;
 
+// Ensure WASM backend loads from relative paths. Configure multi-threading
+// only when SharedArrayBuffer is available (GitHub Pages lacks the required
+// cross-origin headers).
+ort.env.wasm.wasmPaths = './';
+if (typeof SharedArrayBuffer === 'undefined' || !crossOriginIsolated) {
+  ort.env.wasm.numThreads = 1;
+  ort.env.wasm.proxy = false;
+}
+
 input.addEventListener('change', () => {
   file = input.files[0];
   if (file) {
@@ -22,7 +31,10 @@ async function loadModel() {
   if (!session) {
     result.textContent = 'Downloading model...';
     try {
-      session = await ort.InferenceSession.create('squeezenet1_1.onnx');
+      const modelUrl = new URL('./squeezenet1_1.onnx', import.meta.url).href;
+      session = await ort.InferenceSession.create(modelUrl, {
+        executionProviders: ['wasm']
+      });
       result.textContent = 'Model loaded. Click Predict.';
     } catch (e) {
       result.textContent = 'Failed to load model.';
