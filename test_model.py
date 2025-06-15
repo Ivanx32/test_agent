@@ -37,7 +37,7 @@ def eval_dir(dir_path, target_idx_set):
     correct = 0
     total = 0
     for filename in os.listdir(dir_path):
-        if filename.lower().endswith('.jpg'):
+        if filename.lower().endswith(('.jpg', '.jpeg')):
             total += 1
             idx, conf = predict(os.path.join(dir_path, filename))
             if idx in target_idx_set:
@@ -45,8 +45,10 @@ def eval_dir(dir_path, target_idx_set):
     return correct, total
 
 if __name__ == '__main__':
-    cat_correct, cat_total = eval_dir('test_images/cats', set(cat_idx))
-    dog_correct, dog_total = eval_dir('test_images/dogs', set(dog_idx))
+    # Use the sample images packaged in the repository for testing. The
+    # directories mirror the ones from Ivanx32/test_agent on GitHub.
+    cat_correct, cat_total = eval_dir('test_data/cats', set(cat_idx))
+    dog_correct, dog_total = eval_dir('test_data/dogs', set(dog_idx))
     total_correct = cat_correct + dog_correct
     total = cat_total + dog_total
     acc = total_correct / total if total else 0
