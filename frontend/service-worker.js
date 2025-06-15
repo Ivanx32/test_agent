@@ -1,10 +1,12 @@
-const CACHE_NAME = 'cat-detector-cache-v1';
+const CACHE_NAME = 'cat-detector-cache-v3';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/app.js',
-  '/manifest.json'
+  './',
+  './index.html',
+  './style.css',
+  './app.js',
+  './manifest.json',
+  './ort.min.js',
+  './squeezenet1_1.onnx'
 ];
 self.addEventListener('install', e => {
   e.waitUntil(
