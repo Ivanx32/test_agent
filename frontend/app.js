@@ -6,10 +6,10 @@ let file;
 let session;
 
 
-// Ensure WASM backend loads from relative paths. Configure multi-threading
+// Load WASM backend from CDN. Configure multi-threading
 // only when SharedArrayBuffer is available (GitHub Pages lacks the required
 // cross-origin headers).
-ort.env.wasm.wasmPaths = './';
+ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/';
 if (typeof SharedArrayBuffer === 'undefined' || !crossOriginIsolated) {
   ort.env.wasm.numThreads = 1;
   ort.env.wasm.proxy = false;
