@@ -77,9 +77,18 @@ predictBtn.addEventListener('click', async () => {
     inputData[i + size * size] = (data[i * 4 + 1] / 255 - 0.456) / 0.224;
     inputData[i + 2 * size * size] = (data[i * 4 + 2] / 255 - 0.406) / 0.225;
   }
+  log('Image normalized');
   const tensor = new ort.Tensor('float32', inputData, [1, 3, size, size]);
+  log('Created tensor');
   log('Running inference');
-  const output = await session.run({ 'input.1': tensor });
+  let output;
+  try {
+    output = await session.run({ data: tensor });
+  } catch (e) {
+    log('Inference failed: ' + e);
+    result.textContent = 'Inference error';
+    throw e;
+  }
   const scores = output[session.outputNames[0]].data;
   const exps = scores.map(Math.exp);
   const sumExp = exps.reduce((a, b) => a + b, 0);
