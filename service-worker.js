@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cat-detector-cache-v5';
+const CACHE_NAME = 'cat-detector-v6';
 // Cache assets relative to the service worker scope so it works when the
 // application is served from a subfolder (e.g. GitHub Pages).
 const ASSETS = [
