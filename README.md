@@ -16,3 +16,8 @@ Sample test images are tracked with Git LFS. The model weights are stored
 directly in the repository, so additional commands are not required to run the
 web application. The test image dataset is omitted from the repository to keep
 the pull request lightweight.
+
+### Post-merge manual steps
+1. Заменить *.png.empty настоящими иконками (180 / 192 / 512 px).
+2. Запустить `bash scripts/gen-splash.sh` и закоммитить PNG из папки `splash/`.
+3. Проверить PWA на iPhone: отсутствие авто-зумов, корректная safe-area, launch-screen.

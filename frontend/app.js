@@ -4,6 +4,7 @@ const predictBtn = document.getElementById('predict-btn');
 const result = document.getElementById('result');
 const logEl = document.getElementById('log');
 const spinner = document.getElementById('spinner');
+["gesturestart","gesturechange"].forEach(evt=>window.addEventListener(evt,e=>e.preventDefault(),{passive:false}));
 
 log(`Standalone mode: ${window.navigator.standalone ? 'yes' : 'no'}`);
 
@@ -71,7 +72,6 @@ predictBtn.addEventListener('click', async () => {
   spinner.style.display = 'block';
   log('Starting prediction');
   await loadModel();
-  result.textContent = 'Predicting...';
   const size = 224;
   const canvas = document.createElement('canvas');
   canvas.width = size;
