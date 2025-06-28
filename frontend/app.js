@@ -2,6 +2,13 @@ const input = document.getElementById('image-input');
 const preview = document.getElementById('preview');
 const predictBtn = document.getElementById('predict-btn');
 const result = document.getElementById('result');
+const logEl = document.getElementById('log');
+
+function log(message) {
+  logEl.textContent += message + '\n';
+  logEl.scrollTop = logEl.scrollHeight;
+  console.log(message);
+}
 let file;
 let session;
 
@@ -19,6 +26,7 @@ if (typeof SharedArrayBuffer === 'undefined' || !crossOriginIsolated) {
 input.addEventListener('change', () => {
   file = input.files[0];
   if (file) {
+    log(`Selected file: ${file.name}`);
     const reader = new FileReader();
     reader.onload = e => {
       preview.src = e.target.result;
@@ -31,6 +39,7 @@ input.addEventListener('change', () => {
 
 async function loadModel() {
   if (!session) {
+    log('Downloading model...');
     result.textContent = 'Downloading model...';
     try {
       const modelUrl = new URL('./squeezenet1_1.onnx', import.meta.url).href;
@@ -38,15 +47,21 @@ async function loadModel() {
         executionProviders: ['wasm']
       });
       result.textContent = 'Model loaded. Click Predict.';
+      log('Model loaded');
     } catch (e) {
       result.textContent = 'Failed to load model.';
+      log('Failed to load model: ' + e);
       throw e;
     }
+  }
+  else {
+    log('Model already loaded');
   }
 }
 
 predictBtn.addEventListener('click', async () => {
   if (!file) return;
+  log('Starting prediction');
   await loadModel();
   result.textContent = 'Predicting...';
   const size = 224;
@@ -63,6 +78,7 @@ predictBtn.addEventListener('click', async () => {
     inputData[i + 2 * size * size] = (data[i * 4 + 2] / 255 - 0.406) / 0.225;
   }
   const tensor = new ort.Tensor('float32', inputData, [1, 3, size, size]);
+  log('Running inference');
   const output = await session.run({ 'input.1': tensor });
   const scores = output[session.outputNames[0]].data;
   const exps = scores.map(Math.exp);
@@ -74,10 +90,15 @@ predictBtn.addEventListener('click', async () => {
   result.textContent = catProb > 0.5
     ? `Cat detected (conf ${catProb.toFixed(2)})`
     : `No cat detected (conf ${catProb.toFixed(2)})`;
+  log(`Prediction done. Cat probability: ${catProb.toFixed(4)}`);
 });
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('service-worker.js');
+    navigator.serviceWorker.register('service-worker.js').then(() => {
+      log('Service worker registered');
+    }).catch(e => {
+      log('Service worker registration failed: ' + e);
+    });
   });
 }
