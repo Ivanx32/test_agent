@@ -13,3 +13,15 @@ button {
     margin-top: 1rem;
     padding: 0.5rem 1rem;
 }
+
+#log {
+    margin-top: 1rem;
+    padding: 0.5rem;
+    max-height: 200px;
+    overflow-y: auto;
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    text-align: left;
+    white-space: pre-wrap;
+    user-select: text;
+}
