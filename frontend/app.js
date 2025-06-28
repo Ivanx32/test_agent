@@ -3,6 +3,9 @@ const preview = document.getElementById('preview');
 const predictBtn = document.getElementById('predict-btn');
 const result = document.getElementById('result');
 const logEl = document.getElementById('log');
+const spinner = document.getElementById('spinner');
+
+log(`Standalone mode: ${window.navigator.standalone ? 'yes' : 'no'}`);
 
 function log(message) {
   logEl.textContent += message + '\n';
@@ -31,6 +34,7 @@ input.addEventListener('change', () => {
     reader.onload = e => {
       preview.src = e.target.result;
       preview.style.display = 'block';
+      preview.scrollIntoView({behavior:'smooth', block:'center'});
       predictBtn.disabled = false;
     };
     reader.readAsDataURL(file);
@@ -63,6 +67,8 @@ async function loadModel() {
 
 predictBtn.addEventListener('click', async () => {
   if (!file) return;
+  if ('vibrate' in navigator) navigator.vibrate(10);
+  spinner.style.display = 'block';
   log('Starting prediction');
   await loadModel();
   result.textContent = 'Predicting...';
@@ -89,6 +95,7 @@ predictBtn.addEventListener('click', async () => {
   } catch (e) {
     log('Inference failed: ' + e);
     result.textContent = 'Inference error';
+    spinner.style.display = 'none';
     throw e;
   }
   const scores = output[session.outputNames[0]].data;
@@ -101,6 +108,7 @@ predictBtn.addEventListener('click', async () => {
   result.textContent = catProb > 0.5
     ? `Cat detected (conf ${catProb.toFixed(2)})`
     : `No cat detected (conf ${catProb.toFixed(2)})`;
+  spinner.style.display = 'none';
   log(`Prediction done. Cat probability: ${catProb.toFixed(4)}`);
 });
 
