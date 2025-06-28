@@ -130,3 +130,21 @@ if ('serviceWorker' in navigator) {
     });
   });
 }
+
+/* === ORIENTATION LOCK ======================================= */
+const lockOverlay = document.getElementById('rotate-lock');
+
+function checkOrientation(){
+  const isPortrait = window.matchMedia('(orientation: portrait)').matches;
+  lockOverlay.hidden = isPortrait;
+  document.body.style.visibility = isPortrait ? 'visible' : 'hidden';
+}
+
+checkOrientation();
+window.addEventListener('orientationchange', checkOrientation);
+window.addEventListener('resize', checkOrientation);
+
+if (screen.orientation?.lock) {
+  screen.orientation.lock('portrait').catch(()=>{});
+}
+/* === END ORIENTATION LOCK =================================== */
