@@ -5,8 +5,10 @@ const result = document.getElementById('result');
 const logEl = document.getElementById('log');
 const spinner = document.getElementById('spinner');
 
+const logStore = [];
+
 document.getElementById('copy-log-btn').addEventListener('click', async e => {
-  await navigator.clipboard.writeText(logEl.textContent);
+  await navigator.clipboard.writeText(logStore.join('\n'));
   const btn = e.currentTarget;
   btn.textContent = 'Copied!';
   setTimeout(() => btn.textContent = 'Copy log', 1200);
@@ -18,7 +20,8 @@ document.getElementById('copy-log-btn').addEventListener('click', async e => {
 log(`Standalone mode: ${window.navigator.standalone ? 'yes' : 'no'}`);
 
 function log(message) {
-  logEl.textContent += message + '\n';
+  logStore.push(message);
+  logEl.textContent = logStore.join('\n');
   logEl.scrollTop = logEl.scrollHeight;
   console.log(message);
 }
@@ -133,20 +136,37 @@ if ('serviceWorker' in navigator) {
 
 /* ===== ORIENTATION-FIX  ====================================== */
 const wrapper = document.getElementById('root-rotate-wrapper');
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+                   || window.navigator.standalone === true;
 
 function applyOrientation(){
+  /* No transforms in PWA standalone mode: OS already locked portrait */
+  if (isStandalone){
+    wrapper.style.transform = '';
+    wrapper.style.width = '100%';
+    wrapper.style.height = '100%';
+    return;
+  }
+
+  /* Safari browser or Split View */
   const angle = screen.orientation?.angle ?? window.orientation ?? 0;
 
   switch (angle) {
     case 90:   // landscape-RIGHT (Home-button right)
+      wrapper.style.width  = '100dvh';
+      wrapper.style.height = '100dvw';
       wrapper.style.transform = 'rotate(-90deg) translateX(-100dvh)';
       break;
     case -90:
     case 270:  // landscape-LEFT
+      wrapper.style.width  = '100dvh';
+      wrapper.style.height = '100dvw';
       wrapper.style.transform = 'rotate(90deg) translateY(-100dvh)';
       break;
     default:   // portrait orientations
       wrapper.style.transform = '';
+      wrapper.style.width  = '100%';
+      wrapper.style.height = '100%';
   }
 }
 applyOrientation();
