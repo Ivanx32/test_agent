@@ -15,22 +15,21 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Cat Detector</h1>
-  <p id="version">Версия 0.0.10</p>
-  <input type="file" id="image-input" accept="image/*">
-  <div id="preview-container">
-    <img id="preview" alt="Preview" style="display:none;" />
-  </div>
-  <button id="predict-btn" disabled>Predict</button>
-  <div id="spinner"></div>
-  <p id="result"></p>
-  <div id="rotate-lock" hidden>
-    <div class="msg">Поверните устройство<br>в&nbsp;портретный&nbsp;режим</div>
-  </div>
-  <section id="log-wrapper">
-    <pre id="log"></pre>
-    <button id="copy-log-btn" title="Copy entire log">Copy log</button>
-  </section>
+  <div id="root-rotate-wrapper">
+    <h1>Cat Detector</h1>
+    <p id="version">Версия 0.0.10</p>
+    <input type="file" id="image-input" accept="image/*">
+    <div id="preview-container">
+      <img id="preview" alt="Preview" style="display:none;" />
+    </div>
+    <button id="predict-btn" disabled>Predict</button>
+    <div id="spinner"></div>
+    <p id="result"></p>
+    <section id="log-wrapper">
+      <pre id="log"></pre>
+      <button id="copy-log-btn" title="Copy entire log">Copy log</button>
+    </section>
+  </div><!-- /root-rotate-wrapper -->
   <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/ort.min.js"></script>
   <script type="module" src="app.js"></script>
 </body>

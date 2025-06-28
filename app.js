@@ -131,20 +131,20 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-/* === ORIENTATION LOCK ======================================= */
-const lockOverlay = document.getElementById('rotate-lock');
+/* ===== ORIENTATION-FIX  ====================================== */
+const wrapper = document.getElementById('root-rotate-wrapper');
 
-function checkOrientation(){
-  const isPortrait = window.matchMedia('(orientation: portrait)').matches;
-  lockOverlay.hidden = isPortrait;
-  document.body.style.visibility = isPortrait ? 'visible' : 'hidden';
+function applyOrientation(){
+  const angle = screen.orientation?.angle || window.orientation || 0;
+  if (Math.abs(angle) === 90){
+    const dir = angle === 90 ? -90 : 90;
+    wrapper.style.transform = `rotate(${dir}deg) translateY(${dir===90?'-100dvh':'0'})`;
+  }else{
+    wrapper.style.transform = '';
+  }
 }
-
-checkOrientation();
-window.addEventListener('orientationchange', checkOrientation);
-window.addEventListener('resize', checkOrientation);
-
-if (screen.orientation?.lock) {
-  screen.orientation.lock('portrait').catch(()=>{});
-}
-/* === END ORIENTATION LOCK =================================== */
+applyOrientation();
+window.addEventListener('orientationchange', applyOrientation);
+window.addEventListener('resize', applyOrientation);
+screen.orientation?.lock?.('portrait').catch(()=>{});
+/* ===== END ORIENTATION-FIX =================================== */
