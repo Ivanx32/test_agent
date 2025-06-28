@@ -135,12 +135,18 @@ if ('serviceWorker' in navigator) {
 const wrapper = document.getElementById('root-rotate-wrapper');
 
 function applyOrientation(){
-  const angle = screen.orientation?.angle || window.orientation || 0;
-  if (Math.abs(angle) === 90){
-    const dir = angle === 90 ? -90 : 90;
-    wrapper.style.transform = `rotate(${dir}deg) translateY(${dir===90?'-100dvh':'0'})`;
-  }else{
-    wrapper.style.transform = '';
+  const angle = screen.orientation?.angle ?? window.orientation ?? 0;
+
+  switch (angle) {
+    case 90:   // landscape-RIGHT (Home-button right)
+      wrapper.style.transform = 'rotate(-90deg) translateX(-100dvh)';
+      break;
+    case -90:
+    case 270:  // landscape-LEFT
+      wrapper.style.transform = 'rotate(90deg) translateY(-100dvh)';
+      break;
+    default:   // portrait orientations
+      wrapper.style.transform = '';
   }
 }
 applyOrientation();
