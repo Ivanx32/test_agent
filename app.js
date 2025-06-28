@@ -48,6 +48,8 @@ async function loadModel() {
       });
       result.textContent = 'Model loaded. Click Predict.';
       log('Model loaded');
+      log('Inputs: ' + session.inputNames.join(', '));
+      log('Outputs: ' + session.outputNames.join(', '));
     } catch (e) {
       result.textContent = 'Failed to load model.';
       log('Failed to load model: ' + e);
@@ -83,7 +85,7 @@ predictBtn.addEventListener('click', async () => {
   log('Running inference');
   let output;
   try {
-    output = await session.run({ data: tensor });
+    output = await session.run({ [session.inputNames[0]]: tensor });
   } catch (e) {
     log('Inference failed: ' + e);
     result.textContent = 'Inference error';
