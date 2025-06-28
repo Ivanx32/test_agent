@@ -4,7 +4,16 @@ const predictBtn = document.getElementById('predict-btn');
 const result = document.getElementById('result');
 const logEl = document.getElementById('log');
 const spinner = document.getElementById('spinner');
-["gesturestart","gesturechange"].forEach(evt=>window.addEventListener(evt,e=>e.preventDefault(),{passive:false}));
+
+document.getElementById('copy-log-btn').addEventListener('click', async e => {
+  await navigator.clipboard.writeText(logEl.textContent);
+  const btn = e.currentTarget;
+  btn.textContent = 'Copied!';
+  setTimeout(() => btn.textContent = 'Copy log', 1200);
+});
+
+["gesturestart","gesturechange"].forEach(evt =>
+  window.addEventListener(evt, e => e.preventDefault(), {passive:false}));
 
 log(`Standalone mode: ${window.navigator.standalone ? 'yes' : 'no'}`);
 
