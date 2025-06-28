@@ -16,7 +16,7 @@
 </head>
 <body>
   <h1>Cat Detector</h1>
-  <p id="version">Версия 0.0.9</p>
+  <p id="version">Версия 0.0.10</p>
   <input type="file" id="image-input" accept="image/*">
   <div id="preview-container">
     <img id="preview" alt="Preview" style="display:none;" />
@@ -24,7 +24,10 @@
   <button id="predict-btn" disabled>Predict</button>
   <div id="spinner"></div>
   <p id="result"></p>
-  <pre id="log"></pre>
+  <section id="log-wrapper">
+    <pre id="log"></pre>
+    <button id="copy-log-btn" title="Copy entire log">Copy log</button>
+  </section>
   <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/ort.min.js"></script>
   <script type="module" src="app.js"></script>
 </body>
